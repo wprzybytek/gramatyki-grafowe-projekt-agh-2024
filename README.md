@@ -6,8 +6,8 @@
 | --- | --- | --- |
 | Grupa 1 | P1, P2 |  |
 | Grupa 2 | P3, P4, P7 |  |
-| Grupa 3 | P11, P17, P8 |  |
-| Grupa 4 | P9, P10, P16 |  |
+| Grupa 3 | P5, P6, P8 |  |
+| Grupa 4 | P9, P10, P21 |  |
 | Grupa 5 | P11, P12, P22 |  |
 
 ## Organizacja pracy
