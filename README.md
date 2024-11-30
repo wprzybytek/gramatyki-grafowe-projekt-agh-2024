@@ -1,4 +1,4 @@
-# sem09-gramatyki-grafowe-projekt-1
+# Gramatyki Grafowe AGH  - Projekt 1
 
 ## Podział na grupy
 
@@ -16,3 +16,19 @@
 2. Pracujemy tylko w swoich plikach w katalogu productions, możecie sobie testować w pliku main.py ale NIE WYPYCHAJCIE tych zmian na repo
 3. Piszemy testy
 4. Merge branchy do `main` robimy tylko przez Pull Requesta, wymagany minimum 1 approve, to sobie dawajcie sami nawzajem w obrębie swoich grup
+
+
+## Reprezentacja hipergrafu
+
+Używamy biblioteki `networkx`, htóra służy do modelowania i wizualizacji grafów (nie hipergrafów).
+Hipergraf można zasymulować przez dodanie sztucznego wierzchołka dla każdej hiperkrawędzi i połączenia go z wirzchołkami przynależącymi do hiperkrawędzi. To podejście stosujemy.  
+Przykład:
+```
+# hypergraph
+vertices = { 1, 2, 3, 4 }
+hyperedges = { E: (1, 2, 3), A: (1, 2), B: (2, 4) }
+
+# hypergraph as graph
+vertices = { 1, 2, 3, 4, E }
+edges = { E1: (1, E), E2: (2, E), E3: (3, E), A: (1, 2), B: (2, 4) }
+```
