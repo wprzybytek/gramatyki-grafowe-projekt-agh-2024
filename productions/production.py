@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from statistics import fmean
+
 import networkx as nx
 
 

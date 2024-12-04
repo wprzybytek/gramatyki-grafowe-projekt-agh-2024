@@ -68,10 +68,12 @@ def node_colors(graph, multiedges_labels):
     for _, data in graph.nodes(True):
         label = data.get("label")
         h = data.get("h")
-        if label in multiedges_labels:
-            colors.append("darkorange")
-        elif h == 1:
+        if label in multiedges_labels and data.get("R") == 0:
+            colors.append("red")
+        elif label in multiedges_labels and data.get("R") == 1:
             colors.append("lightgreen")
+        elif h == 1:
+            colors.append("darkorange")
         else:
             colors.append("lightblue")
     return colors
