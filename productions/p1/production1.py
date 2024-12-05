@@ -4,7 +4,6 @@ from productions.production import Production
 
 class ProductionP1(Production):
 
-    @property
     def check(self):
         for node, data in self.graph.nodes(data=True):
             if is_hyperedge_node(data) and can_be_splitted(data):
@@ -14,7 +13,7 @@ class ProductionP1(Production):
         return False
 
     def apply(self):
-        result = self.check
+        result = self.check()
         if result:
             q, neighbors = result
             self.subgraph.remove_node(q)

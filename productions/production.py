@@ -11,7 +11,6 @@ class Production(ABC):
         self.graph = graph
         self.subgraph = None
 
-    @property
     def check(self):
         """Check if the production can be applied."""
         pass
@@ -34,6 +33,19 @@ class Production(ABC):
             if nbr in nodes_to_subgraph
         )
         return node, neighbors  # Return the node and its neighbors if condition met
+
+    def _extract_subgraph2(self, nodes_to_subgraph):
+        """Extract subgraph from to apply production to"""
+        self.subgraph = self.graph.__class__()
+        self.subgraph.add_nodes_from((n, self.graph.nodes[n]) for n in nodes_to_subgraph)
+        self.subgraph.add_edges_from(
+            (n, nbr, d)
+            for n, nbrs in self.graph.adj.items()
+            if n in nodes_to_subgraph
+            for nbr, d in nbrs.items()
+            if nbr in nodes_to_subgraph
+        )
+        return nodes_to_subgraph
 
     def _create_midpoint(self, midpoints, n1, n2):
         """Create midpoint in the middle of the edge"""
