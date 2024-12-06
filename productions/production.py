@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
+from collections.abc import Mapping
 from statistics import fmean
+from typing import Optional
 
 import networkx as nx
 
@@ -9,7 +11,7 @@ class Production(ABC):
 
     def __init__(self, graph: nx.Graph):
         self.graph = graph
-        self.subgraph = None
+        self.subgraph: nx.Graph = None
 
     def check(self):
         """Check if the production can be applied."""
@@ -59,7 +61,7 @@ class Production(ABC):
             midpoints[midpoint] = (n1, n2)
         return midpoint
 
-    def _fill_graph(self, neighbors, midpoints):
+    def _fill_graph(self, neighbors, midpoints, edge_data: Optional[Mapping[tuple[str, str], Mapping]] = None):
         """Fill the subgraph with edges and new hyper edge"""
         # Create new center node
         x = fmean([self.subgraph.nodes[neighbor].get('x') for _, neighbor in enumerate(neighbors)])
@@ -69,9 +71,15 @@ class Production(ABC):
 
         # Connect new vertices with center and old ones
         for mp, (n1, n2) in midpoints.items():
-            old_edge = self.subgraph.get_edge_data(n1, n2)
-            self.subgraph.remove_edge(n1, n2)
-            self.graph.remove_edge(n1, n2)
+            should_remove = self.subgraph.get_edge_data(n1, n2) is not None
+            old_edge = edge_data.get((n1, n2)) or edge_data.get((n2, n1)) or self.subgraph.get_edge_data(n1, n2)
+            if old_edge is None:
+                print(f"WARNING: Edge {n1} - {n2} not found")
+                continue
+
+            if should_remove:
+                self.subgraph.remove_edge(n1, n2)
+                self.graph.remove_edge(n1, n2)
             self.subgraph.add_edge(mp, n1, label='E', B=old_edge['B'])
             self.subgraph.add_edge(mp, n2, label='E', B=old_edge['B'])
             self.subgraph.add_edge(mp, center_node, label='E', B=0)
