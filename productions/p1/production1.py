@@ -9,13 +9,18 @@ class ProductionP1(Production):
             if is_hyperedge_node(data) and can_be_splitted(data):
                 neighbors = list(self.graph.neighbors(node))
                 if all_are_not_hanging_node(self.graph, neighbors) and len(neighbors) == 4:
-                    return self._extract_subgraph(node, neighbors)
+                    edges = 0
+                    for (n1, n2) in combinations(neighbors, 2):
+                        if self.graph.has_edge(n1, n2):
+                            edges += 1
+                    if edges == 4:
+                        return self._extract_subgraph(node, neighbors)
         return None
 
     def apply(self):
-        result = self.extract_left_side()
-        if result:
-            q, neighbors = result
+        left_side = self.extract_left_side()
+        if left_side:
+            q, neighbors = left_side
             self.subgraph.remove_node(q)
             self.graph.remove_node(q)
 
