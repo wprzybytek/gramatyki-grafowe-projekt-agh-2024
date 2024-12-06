@@ -61,9 +61,10 @@ class Production(ABC):
             midpoints[midpoint] = (n1, n2)
         return midpoint
 
-    def _fill_graph(self, neighbors, midpoints, edge_data: Optional[Mapping[tuple[str, str], Mapping]] = None):
+    def _fill_graph(self, neighbors, midpoints, edge_data: Optional[Mapping[tuple[str, str], Mapping]] = {}):
         """Fill the subgraph with edges and new hyper edge"""
         # Create new center node
+        edge_data = edge_data or {}
         x = fmean([self.subgraph.nodes[neighbor].get('x') for _, neighbor in enumerate(neighbors)])
         y = fmean([self.subgraph.nodes[neighbor].get('y') for _, neighbor in enumerate(neighbors)])
         center_node = f'v:{x}:{y}'
