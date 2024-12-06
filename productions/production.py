@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from statistics import fmean
-from typing import Optional
+from typing import Any, Optional
 
 import networkx as nx
 
@@ -11,10 +11,10 @@ class Production(ABC):
 
     def __init__(self, graph: nx.Graph):
         self.graph = graph
-        self.subgraph: nx.Graph = None
+        self.subgraph: nx.Graph = None # type: ignore
 
-    def check(self):
-        """Check if the production can be applied."""
+    def extract_left_side(self) -> None | Any:
+        """Extracts left side of the production from the graph if production can be applied else returns None."""
         pass
 
     @abstractmethod

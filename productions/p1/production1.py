@@ -4,16 +4,16 @@ from productions.production import Production
 
 class ProductionP1(Production):
 
-    def check(self):
+    def extract_left_side(self):
         for node, data in self.graph.nodes(data=True):
             if is_hyperedge_node(data) and can_be_splitted(data):
                 neighbors = list(self.graph.neighbors(node))
                 if all_are_not_hanging_node(self.graph, neighbors) and len(neighbors) == 4:
                     return self._extract_subgraph(node, neighbors)
-        return False
+        return None
 
     def apply(self):
-        result = self.check()
+        result = self.extract_left_side()
         if result:
             q, neighbors = result
             self.subgraph.remove_node(q)

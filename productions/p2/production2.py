@@ -21,7 +21,7 @@ class ProductionP2(Production):
         
 
 
-    def check(self):
+    def extract_left_side(self):
         for node, data in self.graph.nodes(data=True):
             if is_hyperedge_node(data) and can_be_splitted(data):
                 neighbors = list(self.graph.neighbors(node))
@@ -30,11 +30,11 @@ class ProductionP2(Production):
 
                     if self._is_valid_middle(a, middle, b):
                         return self._extract_subgraph(node, neighbors + [middle]), (a, middle, b)
-        return False
+        return None
 
     def apply(self):
-        result = self.check()
-        if result != False:
+        result = self.extract_left_side()
+        if result is not None:
             (q, neighbors), (a, middle, b) = result
             neighbors.pop() # remove middle
             self.subgraph.remove_node(q)
