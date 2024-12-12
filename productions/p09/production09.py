@@ -46,9 +46,12 @@ class ProductionP9(Production):
             self.graph.update(self.subgraph)
 
 
-# paste this to main class to see how this production works
 """
-P:5.0:5.0
+from fake_graphs import *
+from plot_graph import plot_graph
+from productions.p09.production09 import ProductionP09
+
+if __name__ == '__main__':
     G = nx.Graph()
     G.add_node("S:5.0:5.0", label="S", R=1)
     G.add_nodes_from(
