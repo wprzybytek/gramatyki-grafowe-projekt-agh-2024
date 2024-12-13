@@ -106,43 +106,11 @@ def test_basic_graph_with_missing_hanging_node():
     G.add_edges_from([
         ('v:1.0:1.0', 'v:1.0:0.0', {'label': 'E', 'B': 1}),
     ])
+    expected_graph = nx.to_dict_of_dicts(G)
 
     prod3 = ProductionP3(G)
     prod3.apply()
 
-    expected_graph = {
-        'Q': {
-            'v:0.0:0.0': {},
-            'v:1.0:0.0': {},
-            'v:1.0:1.0': {},
-            'v:0.0:1.0': {}
-        },
-        'v:0.0:0.0': {
-            'v:0.5:0.0': {'label': 'E', 'B': 1},
-            'v:0.0:1.0': {'label': 'E', 'B': 1},
-            'Q': {},
-        },
-        'v:1.0:0.0': {
-            'v:0.5:0.0': {'label': 'E', 'B': 1},
-            'Q': {},
-            'v:1.0:1.0': {'label': 'E', 'B': 1},
-        },
-        'v:1.0:1.0': {
-            'v:0.0:1.0': {'label': 'E', 'B': 1},
-            'Q': {},
-            'v:1.0:0.0': {'label': 'E', 'B': 1},
-        },
-        'v:0.0:1.0': {
-            'v:1.0:1.0': {'label': 'E', 'B': 1},
-            'v:0.0:0.0': {'label': 'E', 'B': 1},
-            'Q': {},
-        },
-        'v:0.5:0.0': {
-            'v:0.0:0.0': {'label': 'E', 'B': 1},
-            'v:1.0:0.0': {'label': 'E', 'B': 1},
-        },
-
-    }
     assert expected_graph == nx.to_dict_of_dicts(G)
 
 
@@ -150,39 +118,11 @@ def test_basic_graph_with_missing_edge():
     """ Verifies if production 3 was not applied to a basic graph with missing edge"""
     G = prepare_valid_test_graph_p3()
     G.remove_edge('v:1.0:1.0', 'v:1.0:0.5')
+    expected_graph = nx.to_dict_of_dicts(G)
 
     prod3 = ProductionP3(G)
     prod3.apply()
 
-    expected_graph = {
-        'Q': {
-            'v:0.0:0.0': {},
-            'v:1.0:0.0': {},
-            'v:1.0:1.0': {},
-            'v:0.0:1.0': {}
-        },
-        'v:0.0:0.0': {
-            'v:0.5:0.0': {'label': 'E', 'B': 1},
-            'v:0.0:1.0': {'label': 'E', 'B': 1},
-            'Q': {},
-        },
-        'v:1.0:0.0': {
-            'v:0.5:0.0': {'label': 'E', 'B': 1},
-            'v:1.0:0.5': {'label': 'E', 'B': 1},
-            'Q': {},
-        },
-        'v:1.0:1.0': {'v:0.0:1.0': {'label': 'E', 'B': 1}, 'Q': {}},
-        'v:0.0:1.0': {
-            'v:1.0:1.0': {'label': 'E', 'B': 1},
-            'v:0.0:0.0': {'label': 'E', 'B': 1},
-            'Q': {},
-        },
-        'v:1.0:0.5': {'v:1.0:0.0': {'label': 'E', 'B': 1}},
-        'v:0.5:0.0': {
-            'v:0.0:0.0': {'label': 'E', 'B': 1},
-            'v:1.0:0.0': {'label': 'E', 'B': 1},
-        },
-    }
     assert expected_graph == nx.to_dict_of_dicts(G)
 
 
@@ -194,6 +134,7 @@ def test_basic_graph_with_missing_label():
 
     prod3 = ProductionP3(G)
     prod3.apply()
+
     assert expected_graph == nx.to_dict_of_dicts(G)
 
 
