@@ -2,6 +2,7 @@ import networkx as nx
 
 from productions.p03.production3 import ProductionP3
 from productions.p03.utils import prepare_valid_test_graph_p3, prepare_valid_big_test_graph_p3
+from productions.p04.utils import prepare_valid_test_graph_p4
 
 
 def test_basic_graph():
@@ -182,6 +183,28 @@ def test_basic_graph_with_missing_edge():
             'v:1.0:0.0': {'label': 'E', 'B': 1},
         },
     }
+    assert expected_graph == nx.to_dict_of_dicts(G)
+
+
+def test_basic_graph_with_missing_label():
+    """ Verifies if production 3 was not applied to a basic graph with missing label"""
+    G = prepare_valid_test_graph_p3()
+    G.nodes['Q']['label'] = 'P'
+    expected_graph = nx.to_dict_of_dicts(G)
+
+    prod3 = ProductionP3(G)
+    prod3.apply()
+    assert expected_graph == nx.to_dict_of_dicts(G)
+
+
+def test_basic_graph_with_hanging_nodes_on_opposite_sides():
+    """ Verifies if structure is valid after applying production 3 to a graph with hanging nodes on opposite sides"""
+    G = prepare_valid_test_graph_p4()
+    expected_graph = nx.to_dict_of_dicts(G)
+
+    prod3 = ProductionP3(G)
+    prod3.apply()
+
     assert expected_graph == nx.to_dict_of_dicts(G)
 
 
