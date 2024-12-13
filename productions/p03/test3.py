@@ -149,6 +149,25 @@ def test_basic_graph_with_hanging_nodes_on_opposite_sides():
     assert expected_graph == nx.to_dict_of_dicts(G)
 
 
+def test_basic_graph_with_3_hanging_nodes():
+    """ Verifies if production 3 was not applied to a basic graph with 3 hanging nodes"""
+    G = prepare_valid_test_graph_p3()
+    G.remove_edge('v:0.0:1.0', 'v:1.0:1.0')
+    G.add_nodes_from([
+        ('v:0.5:1.0', {'label': 'v', 'x': 0.5, 'y': 1.0, 'h': 1}),
+    ])
+    G.add_edges_from([
+        ('v:0.0:1.0', 'v:0.5:1.0', {'label': 'E', 'B': 1}),
+        ('v:0.5:1.0', 'v:1.0:1.0', {'label': 'E', 'B': 1}),
+    ])
+    expected_graph = nx.to_dict_of_dicts(G)
+
+    prod3 = ProductionP3(G)
+    prod3.apply()
+
+    assert expected_graph == nx.to_dict_of_dicts(G)
+
+
 def test_big_graph():
     """ Verifies if structure is valid after applying production 3 to a big graph"""
     G = prepare_valid_big_test_graph_p3()

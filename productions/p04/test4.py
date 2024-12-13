@@ -139,8 +139,27 @@ def test_basic_graph_with_missing_label():
 
 
 def test_basic_graph_with_neighboring_hanging_nodes():
-    """ Verifies if structure is valid after applying production 3 to a graph with neighboring hanging nodes"""
+    """ Verifies if structure is valid after applying production 4 to a graph with neighboring hanging nodes"""
     G = prepare_valid_test_graph_p3()
+    expected_graph = nx.to_dict_of_dicts(G)
+
+    prod4 = ProductionP4(G)
+    prod4.apply()
+
+    assert expected_graph == nx.to_dict_of_dicts(G)
+
+
+def test_basic_graph_with_3_hanging_nodes():
+    """ Verifies if production 4 was not applied to a basic graph with 3 hanging nodes"""
+    G = prepare_valid_test_graph_p4()
+    G.remove_edge('v:1.0:1.0', 'v:1.0:0.0')
+    G.add_nodes_from([
+        ('v:1.0:0.5', {'label': 'v', 'x': 1.0, 'y': 0.5, 'h': 1}),
+    ])
+    G.add_edges_from([
+        ('v:1.0:1.0', 'v:1.0:0.5', {'label': 'E', 'B': 1}),
+        ('v:1.0:0.5', 'v:1.0:0.0', {'label': 'E', 'B': 1}),
+    ])
     expected_graph = nx.to_dict_of_dicts(G)
 
     prod4 = ProductionP4(G)
