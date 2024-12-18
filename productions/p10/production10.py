@@ -43,43 +43,39 @@ class ProductionP10(Production):
 
         if not result:
             return
-        
+
         q_node, nodes = result
-        print(result)
         self.subgraph.remove_node(q_node)
         self.graph.remove_node(q_node)
-        
+
         h_nodes = {}
-        for node in nodes:
-            for n in self.graph.neighbors(node):
-                if self.graph.nodes[n].get("h") == 1:
-                    if n not in h_nodes:
-                        edge = self.graph.get_edge_data(node, n)
-                        h_nodes[n] = {"neighbors": [node], "B": edge.get("B")}
-                    else:
-                        edge = self.graph.get_edge_data(node, n)
-                        h_nodes[n]["neighbors"].append(node)
-                        if len(h_nodes[n]["neighbors"]) != 2:
-                            raise ValueError("Hanging node has more than 2 neighbors")
-                        if h_nodes[n]["B"] != edge.get("B"):
-                            raise ValueError("Hanging node has different B values")
-                        
-        for h_node, data in h_nodes.items():
-            self.graph.remove_node(h_node)
+        for n, n_attrs in self.graph.nodes.items():
+            if n_attrs.get("h") == 1:
+                v_neighbors = list(self.graph.neighbors(n))
+                if len(v_neighbors) != 2:
+                    raise ValueError("Hanging node has more than 2 neighbors")
+                n1, n2 = v_neighbors
+                b1 = self.graph.get_edge_data(n, n1).get("B")
+                b2 = self.graph.get_edge_data(n, n2).get("B")
+                if b1 != b2:
+                    raise ValueError("Hanging node has different B values")
+                h_nodes[n] = {"neighbors": v_neighbors, "B": b1}
+
+        for n in h_nodes.keys():
+            self.graph.remove_node(n)
 
         midpoints = {}
         for (n1, n2) in combinations(nodes, 2):
             if self.subgraph.get_edge_data(n1, n2):
                 self._create_midpoint(midpoints, n1, n2)
 
-        for h, h_node in h_nodes.items():
-            n1, n2 = h_node["neighbors"]
-            B = h_node["B"]
-            
+        for n_attrs in h_nodes.values():
+            n1, n2 = n_attrs["neighbors"]
+            B = n_attrs["B"]
             self.subgraph.add_edge(n1, n2, label='E', B=B)
             self.graph.add_edge(n1, n2)
             _ = self._create_midpoint(midpoints, n1, n2)
-            
+
         self._fill_graph(nodes, midpoints)
 
         # Replace subgraph in graph
