@@ -14,7 +14,7 @@ class ProductionP9(Production):
         """Check if the production can be applied on the selected hexagon."""
         # Find nodes with R=1 (element marked for splitting) and h=0 for all vertices
         for node, data in self.graph.nodes(data=True):
-            if data.get("label") == "S" and data.get("R") == 1:
+            if data.get("label") == "P" and data.get("R") == 1:
                 neighbors = list(self.graph.neighbors(node))
                 if all(self.graph.nodes[n].get("h") == 0 for n in neighbors):
                     neighbors_edges_cnt = 0
@@ -49,37 +49,36 @@ class ProductionP9(Production):
 """
 from fake_graphs import *
 from plot_graph import plot_graph
-from productions.p09.production09 import ProductionP09
+from productions.p09.production09 import ProductionP9
 
 if __name__ == '__main__':
     G = nx.Graph()
-    G.add_node("S:5.0:5.0", label="S", R=1)
+    G.add_node("P:5.0:5.0", label="P", R=1)
     G.add_nodes_from(
         [
-            ("v:0.0:0.0", {"label": "v", "x": 0.0, "y": 0.0, "h": 0}),
-            ("v:10.0:0.0", {"label": "v", "x": 10.0, "y": 0.0, "h": 0}),
-            ("v:10.0:10.0", {"label": "v", "x": 10.0, "y": 10.0, "h": 0}),
-            ("v:0.0:10.0", {"label": "v", "x": 0.0, "y": 10.0, "h": 0}),
-            ("v:15.0:5.0", {"label": "v", "x": 15.0, "y": 5.0, "h": 0}),
-            ("v:15.0:15.0", {"label": "v", "x": 15.0, "y": 15.0, "h": 0}),
+            ("v:10:5", {"label": "v", "x": 10, "y": 5, "h": 0}),
+            ("v:8:9", {"label": "v", "x": 8, "y": 9, "h": 0}),
+            ("v:3:9", {"label": "v", "x": 3, "y": 9, "h": 0}),
+            ("v:0:5", {"label": "v", "x": 0, "y": 5, "h": 0}),
+            ("v:2:1", {"label": "v", "x": 2, "y": 1, "h": 0}),
+            ("v:8:1", {"label": "v", "x": 8, "y": 1, "h": 0}),
         ]
     )
     G.add_edges_from(
         [
-            ("v:0.0:0.0", "v:10.0:0.0", {"label": "E", "B": 1}),
-            ("v:15.0:5.0", "v:10.0:10.0", {"label": "E", "B": 1}),
-            ("v:10.0:0.0", "v:15.0:5.0", {"label": "E", "B": 1}),
-            ("v:10.0:10.0", "v:0.0:10.0", {"label": "E", "B": 1}),
-            ("v:0.0:10.0", "v:15.0:15.0", {"label": "E", "B": 1}),
-            ("v:15.0:15.0", "v:0.0:0.0", {"label": "E", "B": 1}),
+            ("v:10:5", "v:8:9", {"label": "E", "B": 0}),
+            ("v:8:9", "v:3:9", {"label": "E", "B": 1}),
+            ("v:3:9", "v:0:5", {"label": "E", "B": 1}),
+            ("v:0:5", "v:2:1", {"label": "E", "B": 1}),
+            ("v:2:1", "v:8:1", {"label": "E", "B": 1}),
+            ("v:8:1", "v:10:5", {"label": "E", "B": 1}),
 
-            ("S:5.0:5.0", "v:0.0:0.0"),
-            ("S:5.0:5.0", "v:15.0:5.0"),
-            ("S:5.0:5.0", "v:10.0:0.0"),
-            ("S:5.0:5.0", "v:10.0:10.0"),
-            ("S:5.0:5.0", "v:0.0:10.0"),
-            ("S:5.0:5.0", "v:15.0:15.0"),
-
+            ("P:5.0:5.0", "v:10:5"),
+            ("P:5.0:5.0", "v:8:9"),
+            ("P:5.0:5.0", "v:3:9"),
+            ("P:5.0:5.0", "v:0:5"),
+            ("P:5.0:5.0", "v:2:1"),
+            ("P:5.0:5.0", "v:8:1"),
         ]
     )
 

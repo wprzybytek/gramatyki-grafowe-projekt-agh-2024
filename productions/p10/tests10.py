@@ -9,7 +9,7 @@ from productions.p10.production10 import ProductionP10
 @pytest.fixture(scope='function')
 def prepare_graph_without_hanging(request: type[FixtureRequest]):
     G = nx.Graph()
-    G.add_node("S:5.0:5.0", label="S", R=1)
+    G.add_node("P:5.0:5.0", label="P", R=1)
     G.add_nodes_from(
         [
             ("v:0.0:0.0", {"label": "v", "x": 0.0, "y": 0.0, "h": 0}),
@@ -29,12 +29,12 @@ def prepare_graph_without_hanging(request: type[FixtureRequest]):
             ("v:0.0:10.0", "v:15.0:15.0", {"label": "E", "B": 1}),
             ("v:15.0:15.0", "v:0.0:0.0", {"label": "E", "B": 1}),
 
-            ("S:5.0:5.0", "v:0.0:0.0"),
-            ("S:5.0:5.0", "v:15.0:5.0"),
-            ("S:5.0:5.0", "v:10.0:0.0"),
-            ("S:5.0:5.0", "v:10.0:10.0"),
-            ("S:5.0:5.0", "v:0.0:10.0"),
-            ("S:5.0:5.0", "v:15.0:15.0"),
+            ("P:5.0:5.0", "v:0.0:0.0"),
+            ("P:5.0:5.0", "v:15.0:5.0"),
+            ("P:5.0:5.0", "v:10.0:0.0"),
+            ("P:5.0:5.0", "v:10.0:10.0"),
+            ("P:5.0:5.0", "v:0.0:10.0"),
+            ("P:5.0:5.0", "v:15.0:15.0"),
 
         ]
     )
@@ -45,7 +45,7 @@ def prepare_graph_without_hanging(request: type[FixtureRequest]):
 @pytest.fixture(scope='function')
 def prepare_graph_hanging(request: type[FixtureRequest]):
     G = nx.Graph()
-    G.add_node("S:5.0:5.0", label="S", R=1)
+    G.add_node("P:5.0:5.0", label="P", R=1)
     G.add_nodes_from(
         [
             ("v:0.0:0.0", {"label": "v", "x": 0.0, "y": 0.0, "h": 0}),
@@ -67,12 +67,12 @@ def prepare_graph_hanging(request: type[FixtureRequest]):
             ("v:7.5:12.5", "v:15.0:15.0", {"label": "E", "B": 1}),
             ("v:15.0:15.0", "v:0.0:0.0", {"label": "E", "B": 1}),
 
-            ("S:5.0:5.0", "v:0.0:0.0"),
-            ("S:5.0:5.0", "v:15.0:5.0"),
-            ("S:5.0:5.0", "v:10.0:0.0"),
-            ("S:5.0:5.0", "v:10.0:10.0"),
-            ("S:5.0:5.0", "v:0.0:10.0"),
-            ("S:5.0:5.0", "v:15.0:15.0"),
+            ("P:5.0:5.0", "v:0.0:0.0"),
+            ("P:5.0:5.0", "v:15.0:5.0"),
+            ("P:5.0:5.0", "v:10.0:0.0"),
+            ("P:5.0:5.0", "v:10.0:10.0"),
+            ("P:5.0:5.0", "v:0.0:10.0"),
+            ("P:5.0:5.0", "v:15.0:15.0"),
 
         ]
     )

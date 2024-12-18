@@ -15,7 +15,7 @@ class ProductionP10(Production):
     def check(self):
         """Check if the production can be applied to the selected hexagon with a hanging node."""
         for node, data in self.graph.nodes(data=True):
-            if data.get("label") == "S" and data.get("R") == 1:
+            if data.get("label") == "P" and data.get("R") == 1:
                 neighbors = list(self.graph.neighbors(node))
                 if all(self.graph.nodes[n].get("h") == 0 for n in neighbors):
                     neighbors_edges_cnt = 0
@@ -89,7 +89,7 @@ from productions.p10.production10 import ProductionP10
 
 if __name__ == '__main__':
     G = nx.Graph()
-    G.add_node("S:5.0:5.0", label="S", R=1)
+    G.add_node("P:5.0:5.0", label="P", R=1)
     G.add_nodes_from(
         [
             ("v:0.0:0.0", {"label": "v", "x": 0.0, "y": 0.0, "h": 0}),
@@ -111,12 +111,12 @@ if __name__ == '__main__':
             ("v:7.5:12.5", "v:15.0:15.0", {"label": "E", "B": 1}),
             ("v:15.0:15.0", "v:0.0:0.0", {"label": "E", "B": 1}),
 
-            ("S:5.0:5.0", "v:0.0:0.0"),
-            ("S:5.0:5.0", "v:15.0:5.0"),
-            ("S:5.0:5.0", "v:10.0:0.0"),
-            ("S:5.0:5.0", "v:10.0:10.0"),
-            ("S:5.0:5.0", "v:0.0:10.0"),
-            ("S:5.0:5.0", "v:15.0:15.0"),
+            ("P:5.0:5.0", "v:0.0:0.0"),
+            ("P:5.0:5.0", "v:15.0:5.0"),
+            ("P:5.0:5.0", "v:10.0:0.0"),
+            ("P:5.0:5.0", "v:10.0:10.0"),
+            ("P:5.0:5.0", "v:0.0:10.0"),
+            ("P:5.0:5.0", "v:15.0:15.0"),
 
         ]
     )

@@ -5,7 +5,7 @@ import networkx as nx
 
 
 def plot_graph(graph: nx.Graph, title: str = "Graph Visualization"):
-    multiedges_labels = ["Q", "P", "S"]
+    multiedges_labels = ["Q", "P"]
 
     plt.figure(figsize=(12, 12), facecolor='black')
 

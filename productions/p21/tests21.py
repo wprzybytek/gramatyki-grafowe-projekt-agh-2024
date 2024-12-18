@@ -9,7 +9,7 @@ def prepare_0R_test_graph() -> nx.Graph:
     """Prepares the basic 6-nodes and one S-node graph"""
     G = nx.Graph()
     
-    G.add_node("S:5.0:5.0", label="S", R=0)
+    G.add_node("P:5.0:5.0", label="P", R=0)
     G.add_nodes_from(
         [
             ("v:0.0:0.0", {"label": "v", "x": 0.0, "y": 0.0, "h": 0}),
@@ -22,12 +22,12 @@ def prepare_0R_test_graph() -> nx.Graph:
     )
     G.add_edges_from(
         [
-            ("S:5.0:5.0", "v:0.0:0.0"),
-            ("S:5.0:5.0", "v:15.0:5.0"),
-            ("S:5.0:5.0", "v:10.0:0.0"),
-            ("S:5.0:5.0", "v:5.0:15.0"),
-            ("S:5.0:5.0", "v:0.0:5.0"),
-            ("S:5.0:5.0", "v:15.0:15.0"), # added
+            ("P:5.0:5.0", "v:0.0:0.0"),
+            ("P:5.0:5.0", "v:15.0:5.0"),
+            ("P:5.0:5.0", "v:10.0:0.0"),
+            ("P:5.0:5.0", "v:5.0:15.0"),
+            ("P:5.0:5.0", "v:0.0:5.0"),
+            ("P:5.0:5.0", "v:15.0:15.0"), # added
         ]
     )
     return G
@@ -36,7 +36,7 @@ def prepare_non_OR_test_graph() -> nx.Graph:
     """Prepares the basic 6-nodes and one S-node graph"""
     G = nx.Graph()
     
-    G.add_node("S:5.0:5.0", label="S", R=1)
+    G.add_node("P:5.0:5.0", label="P", R=1)
     G.add_nodes_from(
         [
             ("v:0.0:0.0", {"label": "v", "x": 0.0, "y": 0.0, "h": 0}),
@@ -49,12 +49,12 @@ def prepare_non_OR_test_graph() -> nx.Graph:
     )
     G.add_edges_from(
         [
-            ("S:5.0:5.0", "v:0.0:0.0"),
-            ("S:5.0:5.0", "v:15.0:5.0"),
-            ("S:5.0:5.0", "v:10.0:0.0"),
-            ("S:5.0:5.0", "v:5.0:15.0"),
-            ("S:5.0:5.0", "v:0.0:5.0"),
-            ("S:5.0:5.0", "v:15.0:15.0"), # added
+            ("P:5.0:5.0", "v:0.0:0.0"),
+            ("P:5.0:5.0", "v:15.0:5.0"),
+            ("P:5.0:5.0", "v:10.0:0.0"),
+            ("P:5.0:5.0", "v:5.0:15.0"),
+            ("P:5.0:5.0", "v:0.0:5.0"),
+            ("P:5.0:5.0", "v:15.0:15.0"), # added
         ]
     )
     return G
