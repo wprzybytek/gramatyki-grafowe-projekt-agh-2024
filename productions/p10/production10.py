@@ -45,20 +45,41 @@ class ProductionP10(Production):
             return
         
         q_node, nodes = result
+        print(result)
         self.subgraph.remove_node(q_node)
         self.graph.remove_node(q_node)
+        
+        h_nodes = {}
+        for node in nodes:
+            for n in self.graph.neighbors(node):
+                if self.graph.nodes[n].get("h") == 1:
+                    if n not in h_nodes:
+                        edge = self.graph.get_edge_data(node, n)
+                        h_nodes[n] = {"neighbors": [node], "B": edge.get("B")}
+                    else:
+                        edge = self.graph.get_edge_data(node, n)
+                        h_nodes[n]["neighbors"].append(node)
+                        if len(h_nodes[n]["neighbors"]) != 2:
+                            raise ValueError("Hanging node has more than 2 neighbors")
+                        if h_nodes[n]["B"] != edge.get("B"):
+                            raise ValueError("Hanging node has different B values")
+                        
+        for h_node, data in h_nodes.items():
+            self.graph.remove_node(h_node)
 
         midpoints = {}
         for (n1, n2) in combinations(nodes, 2):
-            # existing edges
             if self.subgraph.get_edge_data(n1, n2):
                 self._create_midpoint(midpoints, n1, n2)
-            # artificially add edge to hanging node
-            elif self.subgraph.degree(n1) == 1 and self.subgraph.degree(n2) == 1:
-                self.subgraph.add_edge(n1, n2, label='E', B=1)
-                self.graph.add_edge(n1, n2)
-                _ = self._create_midpoint(midpoints, n1, n2)
 
+        for h, h_node in h_nodes.items():
+            n1, n2 = h_node["neighbors"]
+            B = h_node["B"]
+            
+            self.subgraph.add_edge(n1, n2, label='E', B=B)
+            self.graph.add_edge(n1, n2)
+            _ = self._create_midpoint(midpoints, n1, n2)
+            
         self._fill_graph(nodes, midpoints)
 
         # Replace subgraph in graph
