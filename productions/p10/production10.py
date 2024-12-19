@@ -50,7 +50,7 @@ class ProductionP10(Production):
 
         h_nodes = {}
         for n, n_attrs in self.graph.nodes.items():
-            if n_attrs.get("h") == 1:
+            if n_attrs.get("h") == 1 and any(n_neighbor in nodes for n_neighbor in self.graph.neighbors(n)):
                 v_neighbors = list(self.graph.neighbors(n))
                 if len(v_neighbors) != 2:
                     raise ValueError("Hanging node has more than 2 neighbors")
