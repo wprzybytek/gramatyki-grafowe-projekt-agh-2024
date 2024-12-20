@@ -24,10 +24,12 @@ class ProductionP10(Production):
                             neighbors_edges_cnt += 1
                     print(neighbors_edges_cnt)
 
-                    # check if only 2 neighbors have another 1 neighbor with h=1 
+                    # check if only 2 neighbors have another 1 neighbor with h=1
                     hanging_neighbors_count = 0
                     for neighbor in neighbors:
-                        hanging_neighbors = [n for n in self.graph.neighbors(neighbor) if self.graph.nodes[n].get("h") == 1]
+                        hanging_neighbors = [
+                            n for n in self.graph.neighbors(neighbor) if self.graph.nodes[n].get("h") == 1
+                        ]
                         if len(hanging_neighbors) == 1:
                             hanging_neighbors_count += 1
 
@@ -65,14 +67,14 @@ class ProductionP10(Production):
             self.graph.remove_node(n)
 
         midpoints = {}
-        for (n1, n2) in combinations(nodes, 2):
+        for n1, n2 in combinations(nodes, 2):
             if self.subgraph.get_edge_data(n1, n2):
                 self._create_midpoint(midpoints, n1, n2)
 
         for n_attrs in h_nodes.values():
             n1, n2 = n_attrs["neighbors"]
             B = n_attrs["B"]
-            self.subgraph.add_edge(n1, n2, label='E', B=B)
+            self.subgraph.add_edge(n1, n2, label="E", B=B)
             self.graph.add_edge(n1, n2)
             _ = self._create_midpoint(midpoints, n1, n2)
 

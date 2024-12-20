@@ -6,7 +6,7 @@ from ..production import Production
 class ProductionP21(Production):
     """
     Production P21:
-    Marks the hexagon elements as breakable. 
+    Marks the hexagon elements as breakable.
     """
 
     @property
@@ -26,7 +26,8 @@ class ProductionP21(Production):
         result = self.check
         if result:
             r_node, neighbors = result
-            self.graph.nodes[r_node]['R'] = 1 
+            self.graph.nodes[r_node]["R"] = 1
+
 
 """
 from fake_graphs import *
