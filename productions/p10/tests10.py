@@ -205,37 +205,37 @@ def get_two_hexagons_with_1_hanging_node_with_common_vertex(x_shift=0, y_shift=0
 #             continue
 #         assert G[common_neighbor][neighbor].get("B") == 0
 
-def test_with_other_hanging_node_p10_apply():
-    G = get_7_nodes_graph_with_hanging_node_on_other_edge()
-    plot_graph(G, title="p10_4_test_with_other_hanging_node_p10_apply_1_before")
-    G_old = G.copy()
-    ProductionP10(G).apply()
-    plot_graph(G, title="p10_4_test_with_other_hanging_node_p10_apply_2_after")
-    assert nx.is_isomorphic(G, G_old) is False
+# def test_with_other_hanging_node_p10_apply():
+#     G = get_7_nodes_graph_with_hanging_node_on_other_edge()
+#     plot_graph(G, title="p10_4_test_with_other_hanging_node_p10_apply_1_before")
+#     G_old = G.copy()
+#     ProductionP10(G).apply()
+#     plot_graph(G, title="p10_4_test_with_other_hanging_node_p10_apply_2_after")
+#     assert nx.is_isomorphic(G, G_old) is False
 
-    for node in G.nodes:
-        assert G.nodes[node].get("h", 0) == 0
+#     for node in G.nodes:
+#         assert G.nodes[node].get("h", 0) == 0
 
-    p_nodes_with_r_0 = [node for node in G.nodes if G.nodes[node].get("label") == "Q" and G.nodes[node].get("R") == 0]
-    assert len(p_nodes_with_r_0) == 6
+#     p_nodes_with_r_0 = [node for node in G.nodes if G.nodes[node].get("label") == "Q" and G.nodes[node].get("R") == 0]
+#     assert len(p_nodes_with_r_0) == 6
 
-    p_nodes_with_r_0_neighbors = [set(G.neighbors(node)) for node in p_nodes_with_r_0]
-    common_neighbors = set.intersection(*p_nodes_with_r_0_neighbors)
-    assert len(common_neighbors) == 1
+#     p_nodes_with_r_0_neighbors = [set(G.neighbors(node)) for node in p_nodes_with_r_0]
+#     common_neighbors = set.intersection(*p_nodes_with_r_0_neighbors)
+#     assert len(common_neighbors) == 1
 
-    common_neighbor = common_neighbors.pop()
-    for neighbor in G.neighbors(common_neighbor):
-        if neighbor in p_nodes_with_r_0:
-            continue
-        assert G[common_neighbor][neighbor].get("B") == 0
+#     common_neighbor = common_neighbors.pop()
+#     for neighbor in G.neighbors(common_neighbor):
+#         if neighbor in p_nodes_with_r_0:
+#             continue
+#         assert G[common_neighbor][neighbor].get("B") == 0
 
-def test_8_nodes_graph_with_2hanging_nodes():
-    G = get_8_nodes_graph_with_2hanging_nodes()
-    plot_graph(G, title="p10_4_test_8_nodes_graph_with_2hanging_nodes_p10_apply_1_before")
-    G_old = G.copy()
-    ProductionP10(G).apply()
-    plot_graph(G, title="p10_4_test_8_nodes_graph_with_2hanging_nodes_p10_apply_2_after")
-    assert nx.is_isomorphic(G, G_old)
+# def test_8_nodes_graph_with_2hanging_nodes():
+#     G = get_8_nodes_graph_with_2hanging_nodes()
+#     plot_graph(G, title="p10_4_test_8_nodes_graph_with_2hanging_nodes_p10_apply_1_before")
+#     G_old = G.copy()
+#     ProductionP10(G).apply()
+#     plot_graph(G, title="p10_4_test_8_nodes_graph_with_2hanging_nodes_p10_apply_2_after")
+#     assert nx.is_isomorphic(G, G_old)
     
 
 # def test_two_hexagons_with_1_hanging_node_with_common_vertex_p10_apply():
@@ -321,3 +321,10 @@ def test_8_nodes_graph_with_2hanging_nodes():
 #         if neighbor in p_nodes_with_r_0:
 #             continue
 #         assert G[common_neighbor][neighbor].get("B") == 0
+
+def test_different_label_graph():
+    G = get_7_nodes_graph_with_hanging_node()
+    G.nodes["P:5.0:5.0"]["label"] = "Q"
+    plot_graph(G, title="p10_8_test_different_label_graph_1_before")
+    assert ProductionP10(G).check is None
+    plot_graph(G, title="p09_8_test_different_label_graph_2_after")

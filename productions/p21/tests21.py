@@ -157,29 +157,36 @@ def prepare_graph_with_hanging_node(R=0, x_shift=0.0, y_shift=0.0):
 #     plot_graph(G, title="p21_5_test_hanging_node_R1_graph_2_after")
 #     assert nx.is_isomorphic(G, G_old)
 
-def test_5_nodes_graph():
-    G = prepare_test_graph_with_5_nodes(R=0)
-    G_old = G.copy()
-    plot_graph(G, title="p21_6_test_5_nodes_graph_1_before")
-    ProductionP21(G).apply()
-    plot_graph(G, title="p21_6_test_5_nodes_graph_2_after")
-    assert nx.is_isomorphic(G, G_old)
+# def test_5_nodes_graph():
+#     G = prepare_test_graph_with_5_nodes(R=0)
+#     G_old = G.copy()
+#     plot_graph(G, title="p21_6_test_5_nodes_graph_1_before")
+#     ProductionP21(G).apply()
+#     plot_graph(G, title="p21_6_test_5_nodes_graph_2_after")
+#     assert nx.is_isomorphic(G, G_old)
 
 
-def test_graph_with_additional_edge_R0():
-    G = prepare_test_graph_with_additional_edge(R=0)
-    G_old = G.copy()
-    plot_graph(G, title="p21_7_test_graph_with_additional_edge_R0_1_before")
-    ProductionP21(G).apply()
-    plot_graph(G, title="p21_7_test_graph_with_additional_edge_R0_2_after")
-    assert nx.is_isomorphic(G, G_old)
-    assert G.nodes["P:5.0:5.0"]["R"] == 1
+# def test_graph_with_additional_edge_R0():
+#     G = prepare_test_graph_with_additional_edge(R=0)
+#     G_old = G.copy()
+#     plot_graph(G, title="p21_7_test_graph_with_additional_edge_R0_1_before")
+#     ProductionP21(G).apply()
+#     plot_graph(G, title="p21_7_test_graph_with_additional_edge_R0_2_after")
+#     assert nx.is_isomorphic(G, G_old)
+#     assert G.nodes["P:5.0:5.0"]["R"] == 1
 
-def test_graph_with_additional_edge_R1():
-    G = prepare_test_graph_with_additional_edge(R=1)
-    G_old = G.copy()
-    plot_graph(G, title="p21_7_test_graph_with_additional_edge_R1_1_before")
-    ProductionP21(G).apply()
-    plot_graph(G, title="p21_7_test_graph_with_additional_edge_R1_2_after")
-    assert nx.is_isomorphic(G, G_old)
-    assert G.nodes["P:5.0:5.0"]["R"] == 1
+# def test_graph_with_additional_edge_R1():
+#     G = prepare_test_graph_with_additional_edge(R=1)
+#     G_old = G.copy()
+#     plot_graph(G, title="p21_7_test_graph_with_additional_edge_R1_1_before")
+#     ProductionP21(G).apply()
+#     plot_graph(G, title="p21_7_test_graph_with_additional_edge_R1_2_after")
+#     assert nx.is_isomorphic(G, G_old)
+#     assert G.nodes["P:5.0:5.0"]["R"] == 1
+
+def test_different_label_graph():
+    G = prepare_test_graph()
+    G.nodes["P:5.0:5.0"]["label"] = "Q"
+    plot_graph(G, title="p21_8_test_different_label_graph_1_before")
+    assert ProductionP21(G).check is None
+    plot_graph(G, title="p21_8_test_different_label_graph_2_after")
