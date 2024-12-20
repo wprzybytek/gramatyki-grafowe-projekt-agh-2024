@@ -14,9 +14,9 @@ class ProductionP21(Production):
         """Checks if the production can be applied to the selected hexagon."""
         for node, data in self.graph.nodes(data=True):
             if data.get("label") == "P" and data.get("R") == 0:
-                print("check passed")
                 neighbors = list(self.graph.neighbors(node))
-                return self._extract_subgraph(node, neighbors)
+                if len(neighbors) == 6:
+                    return self._extract_subgraph(node, neighbors)
         print("didnt pass check")
         return None
 
