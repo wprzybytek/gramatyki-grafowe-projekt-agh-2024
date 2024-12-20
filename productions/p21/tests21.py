@@ -72,7 +72,7 @@ def test_0R_p21_apply():
 
 
 def test_1R_p21_apply():
-    G = prepare_test_graph(R=0)
+    G = prepare_test_graph(R=1)
     G_old = G.copy()
     ProductionP21(G).apply()
     assert nx.is_isomorphic(G, G_old)
