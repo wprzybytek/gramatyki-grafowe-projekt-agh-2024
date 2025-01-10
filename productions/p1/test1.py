@@ -1,7 +1,8 @@
 import networkx as nx
 
 from productions.p1.production1 import ProductionP1
-from productions.utils import prepare_big_graph, prepare_basic_square_graph
+from productions.utils import prepare_big_graph, prepare_basic_square_graph, \
+    prepare_basic_square_with_hanging_node_graph, add_hyperedge_to_graph
 
 
 def test_basic_4_nodes_graph():
@@ -78,6 +79,7 @@ def test_8_nodes_graph_with_2_applies():
     prod1.apply()
     prod1.apply()
 
+    prod1.apply()
     expected_graph = {'Q:1.25:1.25': {'v:0.0:0.0': {},
                  'v:0.0:2.5': {},
                  'v:2.5:0.0': {},
@@ -215,3 +217,71 @@ def test_8_nodes_graph_with_2_applies():
                'v:7.5:10.0': {'B': 0, 'label': 'E'},
                'v:7.5:5.0': {'B': 0, 'label': 'E'}}}
     assert expected_graph == nx.to_dict_of_dicts(g)
+
+
+def test_invalid_graph_with_hanging_node():
+    g = prepare_basic_square_with_hanging_node_graph()
+    prod1 = ProductionP1(g)
+    prod1.apply()
+
+    assert nx.to_dict_of_dicts(prepare_basic_square_with_hanging_node_graph()) == nx.to_dict_of_dicts(g)
+
+def test_without_edge_graph():
+    G = nx.Graph()
+    G.add_nodes_from([
+        ('v:0.0:0.0', {'label': 'v', 'x': 0.0, 'y': 0.0, 'h': 0}),
+        ('v:1.0:0.0', {'label': 'v', 'x': 1.0, 'y': 0.0, 'h': 0}),
+        ('v:1.0:1.0', {'label': 'v', 'x': 1.0, 'y': 1.0, 'h': 0}),
+        ('v:0.0:1.0', {'label': 'v', 'x': 0.0, 'y': 1.0, 'h': 0})
+    ])
+    G.add_edges_from([
+        ('v:0.0:0.0', 'v:1.0:0.0', {'label': 'E', 'B': 1}),
+        ('v:1.0:0.0', 'v:1.0:1.0', {'label': 'E', 'B': 1}),
+        ('v:0.0:1.0', 'v:0.0:0.0', {'label': 'E', 'B': 1}),
+    ])
+    add_hyperedge_to_graph(G, ['v:0.0:0.0', 'v:1.0:0.0', 'v:1.0:1.0', 'v:0.0:1.0'], hyperedge_label='Q', breakable=True)
+    before_dict = nx.to_dict_of_dicts(G)
+
+    prod1 = ProductionP1(G)
+    prod1.apply()
+    assert before_dict == nx.to_dict_of_dicts(G)
+
+
+def test_without_vertex_graph():
+    G = nx.Graph()
+    G.add_nodes_from([
+        ('v:0.0:0.0', {'label': 'v', 'x': 0.0, 'y': 0.0, 'h': 0}),
+        ('v:1.0:0.0', {'label': 'v', 'x': 1.0, 'y': 0.0, 'h': 0}),
+        ('v:1.0:1.0', {'label': 'v', 'x': 1.0, 'y': 1.0, 'h': 0}),
+    ])
+    G.add_edges_from([
+        ('v:0.0:0.0', 'v:1.0:0.0', {'label': 'E', 'B': 1}),
+        ('v:1.0:0.0', 'v:1.0:1.0', {'label': 'E', 'B': 1}),
+    ])
+    add_hyperedge_to_graph(G, ['v:0.0:0.0', 'v:1.0:0.0', 'v:1.0:1.0'], hyperedge_label='Q', breakable=True)
+    before_dict = nx.to_dict_of_dicts(G)
+
+    prod1 = ProductionP1(G)
+    prod1.apply()
+    assert before_dict == nx.to_dict_of_dicts(G)
+
+def test_without_hyperedge():
+    G = nx.Graph()
+    G.add_nodes_from([
+        ('v:0.0:0.0', {'label': 'v', 'x': 0.0, 'y': 0.0, 'h': 0}),
+        ('v:1.0:0.0', {'label': 'v', 'x': 1.0, 'y': 0.0, 'h': 0}),
+        ('v:1.0:1.0', {'label': 'v', 'x': 1.0, 'y': 1.0, 'h': 0}),
+        ('v:0.0:1.0', {'label': 'v', 'x': 0.0, 'y': 1.0, 'h': 0})
+    ])
+    G.add_edges_from([
+        ('v:0.0:0.0', 'v:1.0:0.0', {'label': 'E', 'B': 1}),
+        ('v:1.0:0.0', 'v:1.0:1.0', {'label': 'E', 'B': 1}),
+        ('v:1.0:1.0', 'v:0.0:1.0', {'label': 'E', 'B': 1}),
+        ('v:0.0:1.0', 'v:0.0:0.0', {'label': 'E', 'B': 1}),
+    ])
+    before_dict = nx.to_dict_of_dicts(G)
+
+    prod1 = ProductionP1(G)
+    prod1.apply()
+    assert before_dict == nx.to_dict_of_dicts(G)
+

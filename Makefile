@@ -2,7 +2,7 @@ prepare_venv:
 	python3 -m venv venv
 
 install_requirements:
-	pip3 install -r requirements.cfg
+	pip3 install -r requirements.txt
 
 run_main:
 	python3 main.py
@@ -39,3 +39,6 @@ test_production_16:
 
 test_production_17:
 	pytest -vrPs productions/p17/tests17.py
+
+test_production_21:
+	pytest -vrPs productions/p21/tests21.py
