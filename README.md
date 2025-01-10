@@ -2,8 +2,8 @@
 
 ## Podział na grupy
 
-| Grupa | Produkcje | Osoby                                |
-| --- | --- |--------------------------------------|
+| Grupa | Produkcje | Osoby                               |
+| --- | --- |---------------------------------------------|
 | Grupa 1 | P1, P2 | Damian Tworek, Bartłomiej Wiśniewski |
 | Grupa 2 | P3, P4, P7 |                                      |
 | Grupa 3 | P5, P6, P8 |                                      |
@@ -12,10 +12,10 @@
 
 ## Organizacja pracy
 
-1. Każda grupa odbija się od branch `main` tworzy swojego brancha `prod-xx-yy-zz` (gdzie _xx_, _yy_, _zz_ to są numery produkcji implementowanych na branchu).
-2. Pracujemy tylko w swoich plikach w katalogu productions, możecie sobie testować w pliku main.py ale NIE WYPYCHAJCIE tych zmian na repo
+1. Każda grupa forkuje repo i pracuje na swoim.
+2. Pracujemy tylko w swoich plikach w katalogu productions, możecie sobie testować w nieistniejącym z perspektywy gita pliku main.py.
 3. Piszemy testy
-4. Merge branchy do `main` robimy tylko przez Pull Requesta, wymagany minimum 1 approve, to sobie dawajcie sami nawzajem w obrębie swoich grup
+4. Merge do `main` głównego repo robimy tylko przez Pull Requesta. Będą akceptowane najpóźniej na początku zajęć.
 
 
 ## Reprezentacja hipergrafu
