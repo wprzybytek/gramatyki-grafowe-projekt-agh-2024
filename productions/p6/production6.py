@@ -30,35 +30,37 @@ class ProductionP6(Production):
 
     def apply(self):
         result = self.extract_left_side()
-        if result is not None:
-            (q, all_nodes), m_nodes = result
-            corners = all_nodes[:4]
+        if result is None:
+            raise ApplyException("The operation could not be applied: result from extract_left_side() is None.")
 
-            self.subgraph.remove_node(q)
-            self.graph.remove_node(q)
+        (q, all_nodes), m_nodes = result
+        corners = all_nodes[:4]
 
-            midpoints = {}
-            for m in m_nodes:
-                corner_pair = find_corner_pair_for_middle(self.subgraph, m, corners)
-                if corner_pair is not None:
-                    a, b = corner_pair
-                    midpoints[m] = (a, b)
+        self.subgraph.remove_node(q)
+        self.graph.remove_node(q)
 
-            phantom_edge_data = {}
-            for m in m_nodes:
-                (a, b) = midpoints[m]
-                edge_data_am = self.graph.get_edge_data(a, m) or self.graph.get_edge_data(m, a)
-                edge_data_bm = self.graph.get_edge_data(b, m) or self.graph.get_edge_data(m, b)
-                edge_data_ab = edge_data_am or edge_data_bm
-                if edge_data_ab:
-                    phantom_edge_data[(a, b)] = edge_data_ab
+        midpoints = {}
+        for m in m_nodes:
+            corner_pair = find_corner_pair_for_middle(self.subgraph, m, corners)
+            if corner_pair is not None:
+                a, b = corner_pair
+                midpoints[m] = (a, b)
 
-            self._fill_graph(corners, midpoints, edge_data=phantom_edge_data)
+        phantom_edge_data = {}
+        for m in m_nodes:
+            (a, b) = midpoints[m]
+            edge_data_am = self.graph.get_edge_data(a, m) or self.graph.get_edge_data(m, a)
+            edge_data_bm = self.graph.get_edge_data(b, m) or self.graph.get_edge_data(m, b)
+            edge_data_ab = edge_data_am or edge_data_bm
+            if edge_data_ab:
+                phantom_edge_data[(a, b)] = edge_data_ab
 
-            for m in m_nodes:
-                self.subgraph.nodes[m]['h'] = 0
+        self._fill_graph(corners, midpoints, edge_data=phantom_edge_data)
 
-            self.graph.update(self.subgraph)
+        for m in m_nodes:
+            self.subgraph.nodes[m]['h'] = 0
+
+        self.graph.update(self.subgraph)
 
 
 def is_hyperedge_node(data):
@@ -104,3 +106,8 @@ def find_corner_pair_for_middle(graph: nx.Graph, m, corners):
     if len(c) == 2:
         return c[0], c[1]
     return None
+
+
+class ApplyException(Exception):
+    """Custom exception for when apply() cannot be performed."""
+    pass
